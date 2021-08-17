@@ -5,20 +5,35 @@ import React from 'react';
 // 2. Create a mailbox showing how many unread messages the user has?
 // 3. Toggle a warning banner upon button click! (component returns null)
 
-function App(props) {
-  console.log(props);
-  console.log(props.msgList.length === 0)
-  
+function ListItem(props) {
+  console.log(props)
   return (
     <>
-      <h1>This is my mail.</h1>
-      { (props.msgList.length === 0) && <p>You have no messages</p>}
-      { (props.msgList.length > 0) && <p>You have { props.msgList.length } messages</p>}
+      <li>{props.msg.text}</li>
+      <span onClick>Delete Message</span>
+    </>
+  )
+}
+
+function App(props) {
+  // const numbers = [1, 2, 3, 4, 5];
+  // var listItems = numbers.map((num) => <li>{num}</li>);
+  // [<li>1</li>, <li>2</li> .... ]
+
+  return (
+    <>
+    <ul>
+      {
+        props.msgList.map((msg, i) => <ListItem key={msg.id} msg={msg} />)
+      }
+    </ul>
     </>
   );
 }
 
-
+// const listItems = numbers.map((number) =>
+//     <li>{number}</li>
+//   );
 
 // function WelcomeLoggedOut(prop) {
 //   return (

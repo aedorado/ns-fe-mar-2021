@@ -3,7 +3,15 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 
-let msgList = ['Hi Bro', 'How are you', 'Enjoying learning react?', 'Woo hoo'];
+let msgList = [{
+    text: 'Hi Bro',
+    id: "msg-1"
+  },
+  { 
+    text: 'How are you',
+    id: 'msg-2'
+  }
+];
 // let msgList = [];
 
 ReactDOM.render(
