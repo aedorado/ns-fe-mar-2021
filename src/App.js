@@ -5,28 +5,53 @@ import React from 'react';
 // 2. Create a mailbox header showing how many unread messages the user has?
 // 3. Toggle a warning banner upon button click! (component returns null)
 
+function WelcomeLoggedOut(prop) {
+  return (
+    <div>
+      Welcome unknown user to our site
+    </div>
+  );
+}
+
+function WelcomeLoggedinUser(prop) {
+  return (
+    <div>
+      Welcome {prop.userName} to our website
+    </div>
+  );
+}
+
 class App extends React.Component {
 
   constructor(props) {
     super(props);
     this.state = {
-      isOn: true
+      isUserLoggedIn: false
     }
   }
 
-  toggle = () => {
+  loginLogoutUser = () => {
     this.setState((state) => ({
-      isOn: !state.isOn
+      isUserLoggedIn: !state.isUserLoggedIn
     }));
   }
 
   render() {
+    let name = "Ichhwak";
+    
+    if (this.state.isUserLoggedIn) {
+      var userMessage = <WelcomeLoggedinUser userName={name} />
+    } else {
+      var userMessage = <WelcomeLoggedOut />
+    }
+
     return (
       <div>
-        <button onClick={this.toggle}>
-          { this.state.isOn ? 'ON' : 'OFF' }
-        </button>
+        {userMessage}
+        <br />
+        <button onClick={this.loginLogoutUser}>{ this.state.isUserLoggedIn ? 'Logout' : 'Login' }</button>
       </div>
+
     )
   }
 
