@@ -2,60 +2,75 @@ import './App.css';
 import React from 'react';
 
 // 1. Example: Show a user greeting based on whether user is logged in or not
-// 2. Create a mailbox header showing how many unread messages the user has?
+// 2. Create a mailbox showing how many unread messages the user has?
 // 3. Toggle a warning banner upon button click! (component returns null)
 
-function WelcomeLoggedOut(prop) {
+function App(props) {
+  console.log(props);
+  console.log(props.msgList.length === 0)
+  
   return (
-    <div>
-      Welcome unknown user to our site
-    </div>
+    <>
+      <h1>This is my mail.</h1>
+      { (props.msgList.length === 0) && <p>You have no messages</p>}
+      { (props.msgList.length > 0) && <p>You have { props.msgList.length } messages</p>}
+    </>
   );
 }
 
-function WelcomeLoggedinUser(prop) {
-  return (
-    <div>
-      Welcome {prop.userName} to our website
-    </div>
-  );
-}
 
-class App extends React.Component {
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      isUserLoggedIn: false
-    }
-  }
+// function WelcomeLoggedOut(prop) {
+//   return (
+//     <div>
+//       Welcome unknown user to our site
+//     </div>
+//   );
+// }
 
-  loginLogoutUser = () => {
-    this.setState((state) => ({
-      isUserLoggedIn: !state.isUserLoggedIn
-    }));
-  }
+// function WelcomeLoggedinUser(prop) {
+//   return (
+//     <div>
+//       Welcome {prop.userName} to our website
+//     </div>
+//   );
+// }
 
-  render() {
-    let name = "Ichhwak";
-    
-    if (this.state.isUserLoggedIn) {
-      var userMessage = <WelcomeLoggedinUser userName={name} />
-    } else {
-      var userMessage = <WelcomeLoggedOut />
-    }
+// class App extends React.Component {
 
-    return (
-      <div>
-        {userMessage}
-        <br />
-        <button onClick={this.loginLogoutUser}>{ this.state.isUserLoggedIn ? 'Logout' : 'Login' }</button>
-      </div>
+//   constructor(props) {
+//     super(props);
+//     this.state = {
+//       isUserLoggedIn: false
+//     }
+//   }
 
-    )
-  }
+//   loginLogoutUser = () => {
+//     this.setState((state) => ({
+//       isUserLoggedIn: !state.isUserLoggedIn
+//     }));
+//   }
 
-}
+//   render() {
+//     let name = "Ichhwak";
+
+//     if (this.state.isUserLoggedIn) {
+//       var userMessage = <WelcomeLoggedinUser userName={name} />
+//     } else {
+//       var userMessage = <WelcomeLoggedOut />
+//     }
+
+//     return (
+//       <div>
+//         {userMessage}
+//         <br />
+//         <button onClick={this.loginLogoutUser}>{ this.state.isUserLoggedIn ? 'Logout' : 'Login' }</button>
+//       </div>
+
+//     )
+//   }
+
+// }
 
 // class App extends React.Component {
 

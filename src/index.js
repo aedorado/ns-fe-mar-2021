@@ -3,9 +3,12 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 
+let msgList = ['Hi Bro', 'How are you', 'Enjoying learning react?', 'Woo hoo'];
+// let msgList = [];
+
 ReactDOM.render(
   <>
-    <App></App>
+    <App msgList={msgList}></App>
   </>,
   document.getElementById('root')
 );
