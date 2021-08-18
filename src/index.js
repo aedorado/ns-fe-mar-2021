@@ -10,9 +10,16 @@ let msgList = [{
   { 
     text: 'How are you',
     id: 'msg-2'
-  }
+  },
+  { 
+    text: 'I texted you to check on you',
+    id: 'msg-3'
+  },
+  { 
+    text: 'Hope your health is good',
+    id: 'msg-4'
+  },
 ];
-// let msgList = [];
 
 ReactDOM.render(
   <>

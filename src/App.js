@@ -4,31 +4,47 @@ import React from 'react';
 // 1. Example: Show a user greeting based on whether user is logged in or not
 // 2. Create a mailbox showing how many unread messages the user has?
 // 3. Toggle a warning banner upon button click! (component returns null)
+// 4. Delete a message from the mailbox by clicking delete button
 
 function ListItem(props) {
-  console.log(props)
+  console.log(props);
+
   return (
     <>
       <li>{props.msg.text}</li>
-      <span onClick>Delete Message</span>
+      <span onClick={ () => props.deleteFunc(props.msg.id) }>Delete Message</span>
     </>
   )
 }
 
-function App(props) {
-  // const numbers = [1, 2, 3, 4, 5];
-  // var listItems = numbers.map((num) => <li>{num}</li>);
-  // [<li>1</li>, <li>2</li> .... ]
+class App extends React.Component {
 
-  return (
-    <>
-    <ul>
-      {
-        props.msgList.map((msg, i) => <ListItem key={msg.id} msg={msg} />)
-      }
-    </ul>
-    </>
-  );
+  constructor(props) {
+    super(props);
+    this.state = {
+      msgList: this.props.msgList
+    }
+  }
+
+  deleteMessage = (id) => {
+    console.log(id);
+    this.setState((state) => ({
+      msgList: state.msgList.filter(msg => msg.id !== id)
+    }));
+  }
+
+  render() {
+    return (
+      <>
+      <ul>
+        {
+          this.state.msgList.map((msg, i) => <ListItem key={msg.id} msg={msg} deleteFunc={this.deleteMessage} />)
+        }
+      </ul>
+      {/* <button onClick={this.deleteMessage}>Delete first message</button> */}
+      </>
+    );
+  }
 }
 
 // const listItems = numbers.map((number) =>
