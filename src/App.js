@@ -6,46 +6,103 @@ import React from 'react';
 // 3. Toggle a warning banner upon button click! (component returns null)
 // 4. Delete a message from the mailbox by clicking delete button
 
-function ListItem(props) {
-  console.log(props);
-
-  return (
-    <>
-      <li>{props.msg.text}</li>
-      <span onClick={ () => props.deleteFunc(props.msg.id) }>Delete Message</span>
-    </>
-  )
-}
-
 class App extends React.Component {
 
   constructor(props) {
     super(props);
     this.state = {
-      msgList: this.props.msgList
+      inputName: "",
+      age: "",
+      desc: "",
+      vaccination: ""
     }
   }
 
-  deleteMessage = (id) => {
-    console.log(id);
-    this.setState((state) => ({
-      msgList: state.msgList.filter(msg => msg.id !== id)
-    }));
+  handleInputName = (event) => {
+    this.setState({
+      inputName: event.target.value
+    });
+  }
+
+  handleInputAge = (event) => {
+    this.setState({
+      age: event.target.value
+    });
+  }
+
+  handleInputDesc = (event) => {
+    this.setState({
+      desc: event.target.value
+    });
+  }
+
+  handleInputVacc = (event) => {
+    this.setState({
+      vaccination: event.target.value
+    });
   }
 
   render() {
     return (
       <>
-      <ul>
-        {
-          this.state.msgList.map((msg, i) => <ListItem key={msg.id} msg={msg} deleteFunc={this.deleteMessage} />)
-        }
-      </ul>
-      {/* <button onClick={this.deleteMessage}>Delete first message</button> */}
+        <input placeholder="Enter your name" value={this.state.inputName} onChange={this.handleInputName} />
+        <input placeholder="Enter your age" value={this.state.age} onChange={this.handleInputAge} />
+        <textarea placeholder="Enter your description" value={this.state.desc} onChange={this.handleInputDesc}></textarea>
+        <br /> Vaccination Status
+        <select value={this.state.vaccination} onChange={this.handleInputVacc}>
+          <option value="Yes">Yes</option>
+          <option value="No">No</option>
+        </select>
+        <p>Hello! My name is {this.state.inputName}. My age is {this.state.age}. {this.state.desc}
+        { this.state.vaccination === "Yes" && "I am vaccinated!" } 
+        { this.state.vaccination === "No" && "I will be vaccinated soon!" } 
+        </p>
       </>
     );
   }
+
 }
+
+// function ListItem(props) {
+//   console.log(props);
+
+//   return (
+//     <>
+//       <li>{props.msg.text}</li>
+//       <span onClick={ () => props.deleteFunc(props.msg.id) }>Delete Message</span>
+//     </>
+//   )
+// }
+
+// class App extends React.Component {
+
+//   constructor(props) {
+//     super(props);
+//     this.state = {
+//       msgList: this.props.msgList
+//     }
+//   }
+
+//   deleteMessage = (id) => {
+//     console.log(id);
+//     this.setState((state) => ({
+//       msgList: state.msgList.filter(msg => msg.id !== id)
+//     }));
+//   }
+
+//   render() {
+//     return (
+//       <>
+//       <ul>
+//         {
+//           this.state.msgList.map((msg, i) => <ListItem key={msg.id} msg={msg} deleteFunc={this.deleteMessage} />)
+//         }
+//       </ul>
+//       {/* <button onClick={this.deleteMessage}>Delete first message</button> */}
+//       </>
+//     );
+//   }
+// }
 
 // const listItems = numbers.map((number) =>
 //     <li>{number}</li>
