@@ -6,62 +6,151 @@ import React from 'react';
 // 3. Toggle a warning banner upon button click! (component returns null)
 // 4. Delete a message from the mailbox by clicking delete button
 
+
+class TempInput extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {temp: this.props.temp}
+    this.handleChange = this.handleChange.bind(this);
+  }
+  
+  handleChange(e) {
+    this.setState({
+      temp: e.target.value  // 100
+    });
+    this.props.handlerFunc(this.props.type, e.target.value);
+  }
+  
+  render() {
+    if (this.props.type !== 'c' && this.props.type !== 'f') {
+      return null;
+    }
+    if (this.props.type === 'c') {
+      var placeholder = "Enter celcius temperature";
+    } else if (this.props.type === 'f') {
+      var placeholder = "Enter fahrenheit temperature";
+    }
+    return (
+      <>
+        <p>Enter input in {this.props.type}</p>
+        <input placeholder={placeholder} value={this.props.temp} onChange={this.handleChange} />
+      </>
+    );
+  }
+}
+
 class App extends React.Component {
 
   constructor(props) {
     super(props);
     this.state = {
-      inputName: "",
-      age: "",
-      desc: "",
-      vaccination: ""
+      lastInputType: 'c',
+      lastInputTemp: 0
     }
   }
 
-  handleInputName = (event) => {
-    this.setState({
-      inputName: event.target.value
-    });
+  cToF(celsius) {
+    var cTemp = celsius;
+    var cToFahr = cTemp * 9 / 5 + 32;
+    return cToFahr;
   }
 
-  handleInputAge = (event) => {
+  fToC(fahrenheit) {
+    var fTemp = fahrenheit;
+    var fToCel = (fTemp - 32) * 5 / 9;
+    return fToCel;
+  } 
+
+  handleCel = (type, temp) => {
+    console.log(type, temp);
     this.setState({
-      age: event.target.value
-    });
+      lastInputType: type,  // 'c'
+      lastInputTemp: temp,  // 100
+    })
   }
 
-  handleInputDesc = (event) => {
+  handleFah = (type, temp) => {
+    console.log(type, temp);
     this.setState({
-      desc: event.target.value
-    });
-  }
-
-  handleInputVacc = (event) => {
-    this.setState({
-      vaccination: event.target.value
-    });
+      lastInputType: type,
+      lastInputTemp: temp
+    })
   }
 
   render() {
+    console.log('Rendering');
+    var celcius = this.state.lastInputType === 'c' ? this.state.lastInputTemp : this.fToC(this.state.lastInputTemp);  // 100
+    var fahren = this.state.lastInputType === 'f' ?  this.state.lastInputTemp : this.cToF(this.state.lastInputTemp);  // 212
+
     return (
       <>
-        <input placeholder="Enter your name" value={this.state.inputName} onChange={this.handleInputName} />
-        <input placeholder="Enter your age" value={this.state.age} onChange={this.handleInputAge} />
-        <textarea placeholder="Enter your description" value={this.state.desc} onChange={this.handleInputDesc}></textarea>
-        <br /> Vaccination Status
-        <select value={this.state.vaccination} onChange={this.handleInputVacc}>
-          <option value="Yes">Yes</option>
-          <option value="No">No</option>
-        </select>
-        <p>Hello! My name is {this.state.inputName}. My age is {this.state.age}. {this.state.desc}
-        { this.state.vaccination === "Yes" && "I am vaccinated!" } 
-        { this.state.vaccination === "No" && "I will be vaccinated soon!" } 
-        </p>
+        <TempInput type='c' handlerFunc={this.handleCel} temp={celcius} /> 
+        <br />
+        <TempInput type='f' handlerFunc={this.handleFah} temp={fahren} />
       </>
     );
   }
 
+
 }
+
+
+// class App extends React.Component {
+
+//   constructor(props) {
+//     super(props);
+//     this.state = {
+//       inputName: "",
+//       age: "",
+//       desc: "",
+//       vaccination: ""
+//     }
+//   }
+
+//   handleInputName = (event) => {
+//     this.setState({
+//       inputName: event.target.value
+//     });
+//   }
+
+//   handleInputAge = (event) => {
+//     this.setState({
+//       age: event.target.value
+//     });
+//   }
+
+//   handleInputDesc = (event) => {
+//     this.setState({
+//       desc: event.target.value
+//     });
+//   }
+
+//   handleInputVacc = (event) => {
+//     this.setState({
+//       vaccination: event.target.value
+//     });
+//   }
+
+//   render() {
+//     return (
+//       <>
+//         <input placeholder="Enter your name" value={this.state.inputName} onChange={this.handleInputName} />
+//         <input placeholder="Enter your age" value={this.state.age} onChange={this.handleInputAge} />
+//         <textarea placeholder="Enter your description" value={this.state.desc} onChange={this.handleInputDesc}></textarea>
+//         <br /> Vaccination Status
+//         <select value={this.state.vaccination} onChange={this.handleInputVacc}>
+//           <option value="Yes">Yes</option>
+//           <option value="No">No</option>
+//         </select>
+//         <p>Hello! My name is {this.state.inputName}. My age is {this.state.age}. {this.state.desc}
+//         { this.state.vaccination === "Yes" && "I am vaccinated!" } 
+//         { this.state.vaccination === "No" && "I will be vaccinated soon!" } 
+//         </p>
+//       </>
+//     );
+//   }
+
+// }
 
 // function ListItem(props) {
 //   console.log(props);
