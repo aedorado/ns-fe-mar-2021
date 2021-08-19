@@ -1,5 +1,5 @@
 import './App.css';
-import React from 'react';
+import React, { useState } from 'react';
 
 // 1. Example: Show a user greeting based on whether user is logged in or not
 // 2. Create a mailbox showing how many unread messages the user has?
@@ -7,92 +7,130 @@ import React from 'react';
 // 4. Delete a message from the mailbox by clicking delete button
 
 
-class TempInput extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {temp: this.props.temp}
-    this.handleChange = this.handleChange.bind(this);
+function App(props) {
+  const [mailbox, setMailbox] = useState(['123', 'mail 2']);
+  const [input, setInput] = useState("");
+
+  let sendMail = () => {
+    setMailbox([ ...mailbox, input ]);
+    setInput('');
   }
-  
-  handleChange(e) {
-    this.setState({
-      temp: e.target.value  // 100
-    });
-    this.props.handlerFunc(this.props.type, e.target.value);
-  }
-  
-  render() {
-    if (this.props.type !== 'c' && this.props.type !== 'f') {
-      return null;
-    }
-    if (this.props.type === 'c') {
-      var placeholder = "Enter celcius temperature";
-    } else if (this.props.type === 'f') {
-      var placeholder = "Enter fahrenheit temperature";
-    }
-    return (
-      <>
-        <p>Enter input in {this.props.type}</p>
-        <input placeholder={placeholder} value={this.props.temp} onChange={this.handleChange} />
-      </>
-    );
-  }
+
+  return (
+    <>
+      <input value={input} onChange={e => setInput(e.target.value)} />
+      <button onClick={e => sendMail()}>Submit</button>
+      <ul>
+      { mailbox.map((mail, i) => <li key={i}>{mail}</li>) }
+      </ul>
+    </>
+  );
 }
 
-class App extends React.Component {
+// function App(props) {
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      lastInputType: 'c',
-      lastInputTemp: 0
-    }
-  }
+//   const [count, setCount] = useState(0);
 
-  cToF(celsius) {
-    var cTemp = celsius;
-    var cToFahr = cTemp * 9 / 5 + 32;
-    return cToFahr;
-  }
-
-  fToC(fahrenheit) {
-    var fTemp = fahrenheit;
-    var fToCel = (fTemp - 32) * 5 / 9;
-    return fToCel;
-  } 
-
-  handleCel = (type, temp) => {
-    console.log(type, temp);
-    this.setState({
-      lastInputType: type,  // 'c'
-      lastInputTemp: temp,  // 100
-    })
-  }
-
-  handleFah = (type, temp) => {
-    console.log(type, temp);
-    this.setState({
-      lastInputType: type,
-      lastInputTemp: temp
-    })
-  }
-
-  render() {
-    console.log('Rendering');
-    var celcius = this.state.lastInputType === 'c' ? this.state.lastInputTemp : this.fToC(this.state.lastInputTemp);  // 100
-    var fahren = this.state.lastInputType === 'f' ?  this.state.lastInputTemp : this.cToF(this.state.lastInputTemp);  // 212
-
-    return (
-      <>
-        <TempInput type='c' handlerFunc={this.handleCel} temp={celcius} /> 
-        <br />
-        <TempInput type='f' handlerFunc={this.handleFah} temp={fahren} />
-      </>
-    );
-  }
+//   return (
+//     <>
+//       <button onClick={e => setCount(count + 1)} >Add</button>
+//       <br />
+//       <p>{count}</p>
+//       <br />
+//       <button onClick={e => setCount(count - 1)}>Subtract</button>
+//     </>
+//   );
 
 
-}
+// }
+
+
+// class TempInput extends React.Component {
+//   constructor(props) {
+//     super(props);
+//     this.state = {temp: this.props.temp}
+//     this.handleChange = this.handleChange.bind(this);
+//   }
+  
+//   handleChange(e) {
+//     this.setState({
+//       temp: e.target.value  // 100
+//     });
+//     this.props.handlerFunc(this.props.type, e.target.value);
+//   }
+  
+//   render() {
+//     if (this.props.type !== 'c' && this.props.type !== 'f') {
+//       return null;
+//     }
+//     if (this.props.type === 'c') {
+//       var placeholder = "Enter celcius temperature";
+//     } else if (this.props.type === 'f') {
+//       var placeholder = "Enter fahrenheit temperature";
+//     }
+//     return (
+//       <>
+//         <p>Enter input in {this.props.type}</p>
+//         <input placeholder={placeholder} value={this.props.temp} onChange={this.handleChange} />
+//       </>
+//     );
+//   }
+// }
+
+// class App extends React.Component {
+
+//   constructor(props) {
+//     super(props);
+//     this.state = {
+//       lastInputType: 'c',
+//       lastInputTemp: 0
+//     }
+//   }
+
+//   cToF(celsius) {
+//     var cTemp = celsius;
+//     var cToFahr = cTemp * 9 / 5 + 32;
+//     return cToFahr;
+//   }
+
+//   fToC(fahrenheit) {
+//     var fTemp = fahrenheit;
+//     var fToCel = (fTemp - 32) * 5 / 9;
+//     return fToCel;
+//   } 
+
+//   handleCel = (type, temp) => {
+//     console.log(type, temp);
+//     this.setState({
+//       lastInputType: type,  // 'c'
+//       lastInputTemp: temp,  // 100
+//     })
+//   }
+
+//   handleFah = (type, temp) => {
+//     console.log(type, temp);
+//     this.setState({
+//       lastInputType: type,
+//       lastInputTemp: temp
+//     })
+//   }
+
+//   render() {
+//     console.log('Rendering');
+//     var celcius = this.state.lastInputType === 'c' ? this.state.lastInputTemp : this.fToC(this.state.lastInputTemp);  // 100
+//     var fahren = this.state.lastInputType === 'f' ?  this.state.lastInputTemp : this.cToF(this.state.lastInputTemp);  // 212
+
+//     return (
+//       <>
+//         <TempInput type='c' handlerFunc={this.handleCel} temp={celcius} /> 
+//         <br />
+//         <TempInput type='f' handlerFunc={this.handleFah} temp={fahren} />
+//       </>
+//     );
+//   }
+
+
+// }
 
 
 // class App extends React.Component {
