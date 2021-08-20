@@ -33,39 +33,72 @@ import { render } from '@testing-library/react';
 
 function App(props) {
 
-  const githubAPIUrl = 'https://api.github.com/users/'
-  const [userName, setUserName] = useState('b');
-  const [userData, setUserData] = useState({});
+  const [post, setPost] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(false);
 
-  useEffect(() => {
-    setLoading(true);
+    useEffect(() => {
+        // POST request using fetch inside useEffect React hook
+        setLoading(true);
+        const requestOptions = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ title: 'React Hooks POST Request Example' })
+        };
+        fetch('https://reqres.in/api/posts', requestOptions)
+            .then(response => response.json())
+            .then(setPost)
+            .then(setLoading(false));
+            // .then(data => setPostId(data.id));
 
-    console.log(userName);
-    fetch(githubAPIUrl + userName)
-      .then(data => {
-        if (data.status === 404) {
-          setError(true);
-        } else if (data.status === 200) {
-          setError(false);
+    // empty dependency array means this effect will only run once (like componentDidMount in classes)
+    }, []);
+
+    return (
+      <>
+        {loading && <img className="github-avatar" src="https://miro.medium.com/max/1400/1*CsJ05WEGfunYMLGfsT2sXA.gif" /> }
+        {post !== null  &&
+        <div>
+          <p>{post.title}</p>
+          <p>{post.id}</p>
+          <p>{post.createdAt}</p>
+        </div>
         }
-        return data.json()
-      })
-      .then(setUserData)
-      .then(e => setTimeout(() => setLoading(false), 1000));
-  }, [userName]);
+      </>
+    );
 
-  return (
-    <div className="app">
-      {error && <p className="error">Person not found</p>}
-      <input className="input-username" value={userName} onChange={(e) => setUserName(e.target.value)} />
-      {loading && <img className="github-avatar" src="https://miro.medium.com/max/1400/1*CsJ05WEGfunYMLGfsT2sXA.gif" /> }
-      {!loading && <img className="github-avatar" src="https://www.ivtinternational.com/wp-content/uploads/2019/11/Screenshot-2019-11-27-at-11.22.41.png" /> }
-      <p>Public Repos by User: {userData.public_repos}</p>
-      <p>Public Gists by User: {userData.public_gists}</p>
-    </div>  
-  );
+  // const githubAPIUrl = 'https://api.github.com/users/'
+  // const [userName, setUserName] = useState('b');
+  // const [userData, setUserData] = useState({});
+  // const [loading, setLoading] = useState(true);
+  // const [error, setError] = useState(false);
+
+  // useEffect(() => {
+  //   setLoading(true);
+
+  //   console.log(userName);
+  //   fetch(githubAPIUrl + userName)
+  //     .then(data => {
+  //       if (data.status === 404) {
+  //         setError(true);
+  //       } else if (data.status === 200) {
+  //         setError(false);
+  //       }
+  //       return data.json()
+  //     })
+  //     .then(setUserData)
+  //     .then(e => setTimeout(() => setLoading(false), 1000));
+  // }, [userName]);
+
+  // return (
+  //   <div className="app">
+  //     {error && <p className="error">Person not found</p>}
+  //     <input className="input-username" value={userName} onChange={(e) => setUserName(e.target.value)} />
+  //     {loading && <img className="github-avatar" src="https://miro.medium.com/max/1400/1*CsJ05WEGfunYMLGfsT2sXA.gif" /> }
+  //     {!loading && <img className="github-avatar" src="https://www.ivtinternational.com/wp-content/uploads/2019/11/Screenshot-2019-11-27-at-11.22.41.png" /> }
+  //     <p>Public Repos by User: {userData.public_repos}</p>
+  //     <p>Public Gists by User: {userData.public_gists}</p>
+  //   </div>  
+  // );
 
 }
 
