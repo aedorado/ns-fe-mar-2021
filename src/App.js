@@ -1,5 +1,5 @@
 import './App.css';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 // 1. Example: Show a user greeting based on whether user is logged in or not
 // 2. Create a mailbox showing how many unread messages the user has?
@@ -8,8 +8,26 @@ import React, { useState } from 'react';
 
 
 function App(props) {
-  const [mailbox, setMailbox] = useState(['123', 'mail 2']);
+  const [mailbox, setMailbox] = useState(['123', 'mail 2']); // [arg, function]
   const [input, setInput] = useState("");
+
+  // component renders for first time
+  // useeffect is called  ue1
+  // componenet renders for 2nd time
+  // func returned by ue1 is called
+  // useeffect is called ue2
+  // comp renders for 3rd time
+  // func returned by ue2 is caleed
+  // useeffect is called ue3
+
+  useEffect(() => {
+    console.log('useffect called');
+    document.title = `You have ${mailbox.length} messages.`;
+  }, [mailbox]);
+
+  // useEffect(() => {
+    // document.title = `You have ${mailbox.length} messages.`;
+  // });
 
   let sendMail = () => {
     setMailbox([ ...mailbox, input ]);
