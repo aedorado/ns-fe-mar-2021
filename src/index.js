@@ -23,7 +23,8 @@ let msgList = [{
 
 ReactDOM.render(
   <>
-    <App msgList={msgList}></App>
+    <App />
+    {/* <App msgList={msgList}></App> */}
   </>,
   document.getElementById('root')
 );

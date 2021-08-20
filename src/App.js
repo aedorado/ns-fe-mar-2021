@@ -1,49 +1,113 @@
 import './App.css';
 import React, { useEffect, useState } from 'react';
+import { render } from '@testing-library/react';
 
 // 1. Example: Show a user greeting based on whether user is logged in or not
 // 2. Create a mailbox showing how many unread messages the user has?
 // 3. Toggle a warning banner upon button click! (component returns null)
 // 4. Delete a message from the mailbox by clicking delete button
 
+// function App(props) {
+
+//   const [dc, setDc] = useState(false);
+
+//   return (
+//     <>
+//     <p>Hello</p>
+//     <button onClick={e => setDc(true)}>Show</button>
+//     <button onClick={e => setDc(false)}>Hide</button>
+//     <Text display={dc} />
+//     </>
+//   )
+
+// }
+
+// function Text(props) {
+//   if (props.display === false) {
+//     return null;
+//   }
+//   return (
+//     <p>I am text</p>
+//   );
+// }
 
 function App(props) {
-  const [mailbox, setMailbox] = useState(['123', 'mail 2']); // [arg, function]
-  const [input, setInput] = useState("");
 
-  // component renders for first time
-  // useeffect is called  ue1
-  // componenet renders for 2nd time
-  // func returned by ue1 is called
-  // useeffect is called ue2
-  // comp renders for 3rd time
-  // func returned by ue2 is caleed
-  // useeffect is called ue3
+  const githubAPIUrl = 'https://api.github.com/users/'
+  const [userName, setUserName] = useState('b');
+  const [userData, setUserData] = useState({});
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
 
   useEffect(() => {
-    console.log('useffect called');
-    document.title = `You have ${mailbox.length} messages.`;
-  }, [mailbox]);
+    setLoading(true);
 
-  // useEffect(() => {
-    // document.title = `You have ${mailbox.length} messages.`;
-  // });
-
-  let sendMail = () => {
-    setMailbox([ ...mailbox, input ]);
-    setInput('');
-  }
+    console.log(userName);
+    fetch(githubAPIUrl + userName)
+      .then(data => {
+        if (data.status === 404) {
+          setError(true);
+        } else if (data.status === 200) {
+          setError(false);
+        }
+        return data.json()
+      })
+      .then(setUserData)
+      .then(e => setTimeout(() => setLoading(false), 1000));
+  }, [userName]);
 
   return (
-    <>
-      <input value={input} onChange={e => setInput(e.target.value)} />
-      <button onClick={e => sendMail()}>Submit</button>
-      <ul>
-      { mailbox.map((mail, i) => <li key={i}>{mail}</li>) }
-      </ul>
-    </>
+    <div className="app">
+      {error && <p className="error">Person not found</p>}
+      <input className="input-username" value={userName} onChange={(e) => setUserName(e.target.value)} />
+      {loading && <img className="github-avatar" src="https://miro.medium.com/max/1400/1*CsJ05WEGfunYMLGfsT2sXA.gif" /> }
+      {!loading && <img className="github-avatar" src="https://www.ivtinternational.com/wp-content/uploads/2019/11/Screenshot-2019-11-27-at-11.22.41.png" /> }
+      <p>Public Repos by User: {userData.public_repos}</p>
+      <p>Public Gists by User: {userData.public_gists}</p>
+    </div>  
   );
+
 }
+
+
+
+// function App(props) {
+//   const [mailbox, setMailbox] = useState(['123', 'mail 2']); // [arg, function]
+//   const [input, setInput] = useState("");
+
+//   // component renders for first time
+//   // useeffect is called  ue1
+//   // componenet renders for 2nd time
+//   // func returned by ue1 is called
+//   // useeffect is called ue2
+//   // comp renders for 3rd time
+//   // func returned by ue2 is caleed
+//   // useeffect is called ue3
+
+//   useEffect(() => {
+//     console.log('useffect called');
+//     document.title = `You have ${mailbox.length} messages.`;
+//   }, [mailbox]);
+
+//   // useEffect(() => {
+//     // document.title = `You have ${mailbox.length} messages.`;
+//   // });
+
+//   let sendMail = () => {
+//     setMailbox([ ...mailbox, input ]);
+//     setInput('');
+//   }
+
+//   return (
+//     <>
+//       <input value={input} onChange={e => setInput(e.target.value)} />
+//       <button onClick={e => sendMail()}>Submit</button>
+//       <ul>
+//       { mailbox.map((mail, i) => <li key={i}>{mail}</li>) }
+//       </ul>
+//     </>
+//   );
+// }
 
 // function App(props) {
 

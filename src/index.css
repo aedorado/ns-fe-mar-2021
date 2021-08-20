@@ -16,3 +16,27 @@ code {
   padding: 20px;
   margin: 20px;
 }
+
+.github-avatar {
+    margin: 15px auto;
+    height: 200px;
+    width: 200px;
+    display: block;
+    border-radius: 100px;
+}
+
+.app {
+  width: 50%;
+  margin: auto;
+}
+
+.input-username {
+  width: 100%;
+  border: 1px solid black;
+  border-radius: 5px;
+  box-shadow: black 5px 5px 5px;
+}
+
+.error {
+  color: red;
+}
