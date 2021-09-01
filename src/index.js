@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
+import { BrowserRouter } from 'react-router-dom';
 
 let msgList = [{
     text: 'Hi Bro',
@@ -22,10 +23,9 @@ let msgList = [{
 ];
 
 ReactDOM.render(
-  <>
+  <BrowserRouter>
     <App />
-    {/* <App msgList={msgList}></App> */}
-  </>,
+  </BrowserRouter>,
   document.getElementById('root')
 );
 

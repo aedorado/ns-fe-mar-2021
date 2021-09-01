@@ -1,6 +1,89 @@
 import './App.css';
 import React, { useEffect, useState } from 'react';
 import { render } from '@testing-library/react';
+import { Link, Route, Switch, useParams, useRouteMatch } from 'react-router-dom';
+
+
+// 1. Enclose App in BrowserRouter
+// 2. Add Link components to act as links/anchors
+// 3. Use Switch-Route combination to match the path
+
+function App() {
+  return (
+    <>
+      <h1>React Router Demo</h1>
+      <nav>
+        <ul>
+          <li><Link to="/home"> Home </Link></li>
+          <li><Link to="/profilelist"> Profile List </Link></li>
+          <li><Link to="/about"> About </Link></li>
+          <li><Link to="/"> Slash </Link></li>
+        </ul>
+      </nav>
+
+      <div>
+        <Switch>
+          <Route path="/home">
+            <Home />
+          </Route>
+          <Route path="/profilelist">
+            <ProfileList />
+          </Route>
+          <Route path="/about">
+            <About />
+          </Route>
+          <Route path="/">
+              <p>At slash</p>
+          </Route>
+        </Switch>
+      </div>
+
+    </>
+  );
+}
+
+function Home() {
+  return (
+    <div>Home Page</div>
+  );
+}
+
+function ProfileList() {
+  let { path } = useRouteMatch();
+  return (
+    <div>
+      <ul>
+        <li><Link to={`${path}/anurag`}> anurag </Link></li>
+        <li><Link to={`${path}/diwakar`}> Diwakar </Link></li>
+        <li><Link to={`${path}/anant`}> Anant </Link></li>
+        <li><Link to={`${path}/aditya`}> Aditya </Link></li>
+      </ul>
+      <Switch>
+      <Route path={`${path}/:username`}>
+          <Profile />
+        </Route>        
+      </Switch>
+    </div>
+  );
+}
+
+function Profile() {
+  let { username } = useParams();
+  return (
+    <>
+      {username}'s Profile Page
+    </>
+  );
+}
+
+function About() {
+  return (
+    <div>About Page</div>
+  );
+}
+
+
+
 
 // 1. Example: Show a user greeting based on whether user is logged in or not
 // 2. Create a mailbox showing how many unread messages the user has?
@@ -31,76 +114,76 @@ import { render } from '@testing-library/react';
 //   );
 // }
 
-function App(props) {
+// function App(props) {
 
-  const [post, setPost] = useState(null);
-  const [loading, setLoading] = useState(true);
+//   const [post, setPost] = useState(null);
+//   const [loading, setLoading] = useState(true);
 
-    useEffect(() => {
-        // POST request using fetch inside useEffect React hook
-        setLoading(true);
-        const requestOptions = {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ title: 'React Hooks POST Request Example' })
-        };
-        fetch('https://reqres.in/api/posts', requestOptions)
-            .then(response => response.json())
-            .then(setPost)
-            .then(setLoading(false));
-            // .then(data => setPostId(data.id));
+//     useEffect(() => {
+//         // POST request using fetch inside useEffect React hook
+//         setLoading(true);
+//         const requestOptions = {
+//             method: 'POST',
+//             headers: { 'Content-Type': 'application/json' },
+//             body: JSON.stringify({ title: 'React Hooks POST Request Example' })
+//         };
+//         fetch('https://reqres.in/api/posts', requestOptions)
+//             .then(response => response.json())
+//             .then(setPost)
+//             .then(setLoading(false));
+//             // .then(data => setPostId(data.id));
 
-    // empty dependency array means this effect will only run once (like componentDidMount in classes)
-    }, []);
+//     // empty dependency array means this effect will only run once (like componentDidMount in classes)
+//     }, []);
 
-    return (
-      <>
-        {loading && <img className="github-avatar" src="https://miro.medium.com/max/1400/1*CsJ05WEGfunYMLGfsT2sXA.gif" /> }
-        {post !== null  &&
-        <div>
-          <p>{post.title}</p>
-          <p>{post.id}</p>
-          <p>{post.createdAt}</p>
-        </div>
-        }
-      </>
-    );
+//     return (
+//       <>
+//         {loading && <img className="github-avatar" src="https://miro.medium.com/max/1400/1*CsJ05WEGfunYMLGfsT2sXA.gif" /> }
+//         {post !== null  &&
+//         <div>
+//           <p>{post.title}</p>
+//           <p>{post.id}</p>
+//           <p>{post.createdAt}</p>
+//         </div>
+//         }
+//       </>
+//     );
 
-  // const githubAPIUrl = 'https://api.github.com/users/'
-  // const [userName, setUserName] = useState('b');
-  // const [userData, setUserData] = useState({});
-  // const [loading, setLoading] = useState(true);
-  // const [error, setError] = useState(false);
+//   // const githubAPIUrl = 'https://api.github.com/users/'
+//   // const [userName, setUserName] = useState('b');
+//   // const [userData, setUserData] = useState({});
+//   // const [loading, setLoading] = useState(true);
+//   // const [error, setError] = useState(false);
 
-  // useEffect(() => {
-  //   setLoading(true);
+//   // useEffect(() => {
+//   //   setLoading(true);
 
-  //   console.log(userName);
-  //   fetch(githubAPIUrl + userName)
-  //     .then(data => {
-  //       if (data.status === 404) {
-  //         setError(true);
-  //       } else if (data.status === 200) {
-  //         setError(false);
-  //       }
-  //       return data.json()
-  //     })
-  //     .then(setUserData)
-  //     .then(e => setTimeout(() => setLoading(false), 1000));
-  // }, [userName]);
+//   //   console.log(userName);
+//   //   fetch(githubAPIUrl + userName)
+//   //     .then(data => {
+//   //       if (data.status === 404) {
+//   //         setError(true);
+//   //       } else if (data.status === 200) {
+//   //         setError(false);
+//   //       }
+//   //       return data.json()
+//   //     })
+//   //     .then(setUserData)
+//   //     .then(e => setTimeout(() => setLoading(false), 1000));
+//   // }, [userName]);
 
-  // return (
-  //   <div className="app">
-  //     {error && <p className="error">Person not found</p>}
-  //     <input className="input-username" value={userName} onChange={(e) => setUserName(e.target.value)} />
-  //     {loading && <img className="github-avatar" src="https://miro.medium.com/max/1400/1*CsJ05WEGfunYMLGfsT2sXA.gif" /> }
-  //     {!loading && <img className="github-avatar" src="https://www.ivtinternational.com/wp-content/uploads/2019/11/Screenshot-2019-11-27-at-11.22.41.png" /> }
-  //     <p>Public Repos by User: {userData.public_repos}</p>
-  //     <p>Public Gists by User: {userData.public_gists}</p>
-  //   </div>  
-  // );
+//   // return (
+//   //   <div className="app">
+//   //     {error && <p className="error">Person not found</p>}
+//   //     <input className="input-username" value={userName} onChange={(e) => setUserName(e.target.value)} />
+//   //     {loading && <img className="github-avatar" src="https://miro.medium.com/max/1400/1*CsJ05WEGfunYMLGfsT2sXA.gif" /> }
+//   //     {!loading && <img className="github-avatar" src="https://www.ivtinternational.com/wp-content/uploads/2019/11/Screenshot-2019-11-27-at-11.22.41.png" /> }
+//   //     <p>Public Repos by User: {userData.public_repos}</p>
+//   //     <p>Public Gists by User: {userData.public_gists}</p>
+//   //   </div>  
+//   // );
 
-}
+// }
 
 
 

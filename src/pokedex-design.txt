@@ -1,0 +1,16 @@
+App
+- Pokelist
+    - Header (stateless)
+    - Search (stateful - search term, the api result)
+        - SearchResults (stateless) Props: the result of the search 
+    - PokemonCards (stateful - range of pokemon, pokemon data)
+        - PokemonCard (stateless) Props: a single pokemon form the data
+        - NavButtons (stateless) Props: a function to change the range
+- Pokemon
+    - PokemonDetailsCard (stateful - pokemon #, details of a given pokemon)
+        - PokemonDetailsCardImage (stateless) Props: image url for pokemon
+        - PokemonDetails (stateless) Props: the details about the given pokemon
+
+
+
+
