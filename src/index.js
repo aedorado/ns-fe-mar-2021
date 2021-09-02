@@ -4,30 +4,32 @@ import './index.css';
 import App from './App';
 import { BrowserRouter } from 'react-router-dom';
 
-let msgList = [{
-    text: 'Hi Bro',
-    id: "msg-1"
-  },
-  { 
-    text: 'How are you',
-    id: 'msg-2'
-  },
-  { 
-    text: 'I texted you to check on you',
-    id: 'msg-3'
-  },
-  { 
-    text: 'Hope your health is good',
-    id: 'msg-4'
-  },
-];
-
 ReactDOM.render(
   <BrowserRouter>
     <App />
   </BrowserRouter>,
   document.getElementById('root')
 );
+
+// let msgList = [{
+//     text: 'Hi Bro',
+//     id: "msg-1"
+//   },
+//   { 
+//     text: 'How are you',
+//     id: 'msg-2'
+//   },
+//   { 
+//     text: 'I texted you to check on you',
+//     id: 'msg-3'
+//   },
+//   { 
+//     text: 'Hope your health is good',
+//     id: 'msg-4'
+//   },
+// ];
+
+
 
 // function tick() {
 //   const element = (

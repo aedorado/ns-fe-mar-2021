@@ -1,3 +1,40 @@
+.pokemon-card {
+  float: left;
+  display: inline;
+  margin: 20px;
+  border: 2px solid black;
+  min-width: 100px;
+  min-height: 100px;
+}
+
+.pokemon-card-bottom-name {
+  text-align: center;
+}
+
+.nav-buttons {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+}
+
+.nav-buttons button {
+  background-color: darkblue;
+  border: none;
+  color: white;
+  border-radius: 4px;
+  height: 24px;
+  width: 78px;
+}
+
+
+
+
+
+
+
+
+
+
 .App {
   text-align: center;
 }
