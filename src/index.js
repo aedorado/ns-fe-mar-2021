@@ -3,10 +3,11 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import { BrowserRouter } from 'react-router-dom';
+import HOCApp from './HOCApp';
 
 ReactDOM.render(
   <BrowserRouter>
-    <App />
+    <HOCApp />
   </BrowserRouter>,
   document.getElementById('root')
 );
