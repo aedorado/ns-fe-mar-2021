@@ -7,7 +7,7 @@ import HOCApp from './HOCApp';
 
 ReactDOM.render(
   <BrowserRouter>
-    <HOCApp />
+    <App />
   </BrowserRouter>,
   document.getElementById('root')
 );
