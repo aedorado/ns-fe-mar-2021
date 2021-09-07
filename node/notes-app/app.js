@@ -1,12 +1,5 @@
 const notes = require('./notes.js');
 
-// process.argv.forEach((val, index) => {
-//     console.log(`${index}: ${val}`)
-// })
-
-// notes.writeNote('content from app.js\n')
-// notes.readNote();
-
 let noteToWrite = {}
 
 let args = process.argv.slice(2);
@@ -19,8 +12,6 @@ args.forEach((item, idx) => {
     }
 });
 
-console.log(noteToWrite);
-
-notes.writeNote(noteToWrite)
-notes.readNote();
-
+notes.readNote('note 5');
+// notes.addNote(noteToWrite);
+// notes.showAllNotes();
