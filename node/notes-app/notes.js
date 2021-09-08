@@ -6,12 +6,16 @@ const chalk = require('chalk');
 // 3. [X] Display all note []
 // 4. [X] Reading a note [id] 
 
-const filename = './notes.json'
+const filename = './note.json'
 
 function readNote(id) {
     let notes = loadNotes();
     note = notes.find((note) => note.id == id);
-    console.log(chalk.cyan(note.content));
+    if (note === undefined) {
+        console.log(chalk.inverse.red('Note not found'));
+        return ;
+    }
+    console.log(chalk.cyan.inverse(note.content));
 }
 
 function removeNote(id) {
@@ -36,8 +40,14 @@ function showAllNotes() {
 // adds the note to the notes.json file
 function addNote(note) {
     let allNotes = loadNotes();
+    let noteAlreadyExists = allNotes.some((exnote) => exnote.id == note.id);
+    if (noteAlreadyExists) {
+        console.log(chalk.red.inverse("Note with given id already exists!"));
+        return ;
+    }
     allNotes = [...allNotes, note];
     saveNotes(allNotes);
+    console.log(chalk.green.inverse('Note was added'));
 }
 
 // read form notes.json and return the notes as list
