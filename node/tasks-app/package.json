@@ -1,5 +1,5 @@
 {
-  "name": "weather-app",
+  "name": "tasks-app",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -10,7 +10,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "node-fetch": "^3.0.0",
-    "request": "^2.88.2"
+    "mongodb": "^4.1.1"
   }
 }
