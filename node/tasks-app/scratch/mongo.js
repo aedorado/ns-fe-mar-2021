@@ -48,9 +48,12 @@ MongoClient.connect(connURL, (err, client) => {
     //     age: 22
     // }).then(res => console.log(res));
 
-    db.collection('users').deleteMany({
-        age: {$gte: 18}
-    }).then(res => console.log(res));
+    objid = new ObjectId();
+    console.log(objid.getTimestamp());
+
+    // db.collection('users').deleteMany({
+    //     age: {$gte: 18}
+    // }).then(res => console.log(res));
 
     // db.collection('users').updateOne({
     //     '_id': ObjectId("6140d526276f03940badb8af")
