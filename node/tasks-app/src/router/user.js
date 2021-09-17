@@ -1,4 +1,5 @@
 const express = require('express');
+const bcrypt = require('bcrypt');
 const User = require('../models/user');
 require('../db/connect');
 
@@ -76,6 +77,22 @@ router.patch('/user/:id', async (req, res) => {
     } catch (e) {
         console.log(e);
         return res.status(500).send('Could not update the user');
+    }
+});
+
+router.post('/user/login', async (req, res) => {
+    try {
+        const email = req.body.email;
+        const password = req.body.password;
+        const user = await User.findOne({email: email});
+
+        const isMatch = await bcrypt.compare(password, user.password);
+        if (!isMatch) {
+            throw new Error('Invalid Credentials!');
+        }
+        res.status(200).send(user);
+    } catch (e) {
+        res.status(500).send('Not able to login');
     }
 });
 
