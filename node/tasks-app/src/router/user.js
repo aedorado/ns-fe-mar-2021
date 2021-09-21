@@ -1,6 +1,7 @@
 const express = require('express');
 const bcrypt = require('bcrypt');
 const User = require('../models/user');
+const auth = require('../middleware/auth')
 require('../db/connect');
 
 const router = new express.Router();
@@ -15,23 +16,25 @@ const router = new express.Router();
 // localhost:300/updateUser
 // localhost:300/getUser
 
+router.get('/user/me', auth, async (req, res) => {
+    res.status(200).send(req.user);
+});
 
 // POST localhost:300/user
 router.post('/user', async (req, res) => {
     try {
-        const user = new User(req.body);
-        const doc = await user.save();
-        res.status(201).send(doc);
+        const userFromReqBody = new User(req.body);
+        const user = await userFromReqBody.save();
+        const token = await user.generateAuthenticationToken();
+        res.status(201).send({user, token});
     } catch (e) {
         res.status(500).send('User not created!');
     }
 });
 
 // GET localhost:300/user
-router.get('/user/:id', async (req, res) => {
-    // req.query.name
-    // req.body
-    // req.params.name
+
+router.get('/user/:id', auth, async (req, res) => {
     try {
         const id = req.params.id;
         const user = await User.findById(id);
@@ -45,9 +48,9 @@ router.get('/user/:id', async (req, res) => {
 });
 
 // DELETE localhost:300/user
-router.delete('/user/:id', async (req, res) => {
+router.delete('/user/me', auth, async (req, res) => {
     try {
-        const id = req.params.id;
+        const id = req.user.id;
         const result = await User.findByIdAndDelete(id);
         res.status(200).send(result);
     } catch (e) {
@@ -85,15 +88,31 @@ router.post('/user/login', async (req, res) => {
         const email = req.body.email;
         const password = req.body.password;
         const user = await User.findOne({email: email});
-
         const isMatch = await bcrypt.compare(password, user.password);
         if (!isMatch) {
             throw new Error('Invalid Credentials!');
         }
-        res.status(200).send(user);
+        // genrate the jwt token when user is verified using password
+        const token = await user.generateAuthenticationToken();
+        res.status(200).send({ user, token });
     } catch (e) {
+        console.log(e);
         res.status(500).send('Not able to login');
     }
+});
+
+router.post('/logoutAll', auth, async (req, res) => {
+    req.user.tokens = [];
+    await req.user.save();
+    res.status(200).send('User Logged out from everywhere!');
+});
+
+router.post('/logout', auth, async (req, res) => {
+    req.user.tokens = req.user.tokens.filter((t) => {
+        return t.token != req.token;
+    });
+    await req.user.save();
+    res.status(200).send('User Logged out!');
 });
 
 module.exports = router;

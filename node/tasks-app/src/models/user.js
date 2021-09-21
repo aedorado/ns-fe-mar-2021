@@ -1,6 +1,9 @@
 const bcrypt = require('bcrypt');
 const mongoose = require('mongoose');
+const jwt = require('jsonwebtoken');
 const validator = require('validator');
+
+const JWT_SECRET = 'secret';
 
 const userSchema = new mongoose.Schema({
     name: {
@@ -30,14 +33,41 @@ const userSchema = new mongoose.Schema({
         validate(val) {
             if (val.toLowerCase() === 'password') throw new Error('Password cannot be password!');
         }
-    }
+    },
+    tokens: [{
+        token: {
+            type: String,
+            required: true
+        }
+    }]
 });
 
-// userSchema.pre('save', function (next) {    // IMPORTANT do not use arrow function here as this will lose context
-//     const user = this;
-//     user.password = bcrypt.hashSync(user.password, 4);
-//     next();
-// });
+userSchema.methods.toJSON = function () {
+    const user = this;
+    const userObject = user.toObject();
+
+    delete userObject.tokens;
+    delete userObject.password;
+
+    return userObject;
+}
+
+userSchema.methods.generateAuthenticationToken = async function() {
+    const user = this;
+    const token = jwt.sign({ _id: user._id.toString() }, JWT_SECRET);
+    user.tokens = [...user.tokens, { token }];
+    await user.save();
+    return token;
+}
+
+// MONGOOSE MIDDLEWARE
+userSchema.pre('save', function (next) {    // IMPORTANT do not use arrow function here as this will lose context
+    const user = this;
+    if (user.isModified('password')) {
+        user.password = bcrypt.hashSync(user.password, 4);
+    }
+    next();
+});
 
 const User = mongoose.model('User', userSchema); 
 
