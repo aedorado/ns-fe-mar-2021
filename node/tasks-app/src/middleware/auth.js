@@ -17,7 +17,6 @@ const auth = async (req, res, next) => {
 
         req.user = user;
         req.token = token;
-        console.log('End of mw');
         next();
     } catch (e) {
         console.log(e);

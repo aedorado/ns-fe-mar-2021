@@ -1,6 +1,7 @@
 const bcrypt = require('bcrypt');
 const mongoose = require('mongoose');
 const jwt = require('jsonwebtoken');
+const Task = require('../models/task');
 const validator = require('validator');
 
 const JWT_SECRET = 'secret';
@@ -42,6 +43,12 @@ const userSchema = new mongoose.Schema({
     }]
 });
 
+userSchema.virtual('tasks', {
+    ref: 'Task',
+    localField: '_id',
+    foreignField: 'owner'
+});
+
 userSchema.methods.toJSON = function () {
     const user = this;
     const userObject = user.toObject();
@@ -68,6 +75,14 @@ userSchema.pre('save', function (next) {    // IMPORTANT do not use arrow functi
     }
     next();
 });
+
+userSchema.pre('remove', async function(next) {
+    const user = this;
+    console.log(user);
+    await Task.deleteMany({ owner: user._id });
+    next();
+});
+
 
 const User = mongoose.model('User', userSchema); 
 
